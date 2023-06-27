@@ -1,0 +1,27 @@
+name: apache_math3
+description: Flutter plugin for Using apache math3.
+version: 0.0.1
+homepage:
+
+environment:
+  sdk: '>=3.0.3 <4.0.0'
+  flutter: ">=3.3.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  plugin_platform_interface: ^2.0.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        package: com.ipinlabs.apache_math3
+        pluginClass: ApacheMath3Plugin
+      ios:
+        pluginClass: ApacheMath3Plugin
