@@ -50,11 +50,10 @@ public class ApacheMath3Plugin implements FlutterPlugin, MethodCallHandler {
       assert  originValue != null;
       assert  originOutput != null;
 
-      List<Long> longList = new ArrayList<>();
+      List<Long> longTinList = new ArrayList<>();
       for (Integer value : t_in) {
-        longList.add(value.longValue());
+        longTinList.add(value.longValue());
       }
-      List<Long> longTin = longList;
 
       List<Float> floatValue = new ArrayList<>();
       for (Double element : originValue) {
@@ -68,7 +67,7 @@ public class ApacheMath3Plugin implements FlutterPlugin, MethodCallHandler {
 
       LinearInterpolator li = new LinearInterpolator();
       PolynomialSplineFunction psf =
-              li.interpolate(longTin.stream().mapToDouble(Long::doubleValue).toArray(),
+              li.interpolate(longTinList.stream().mapToDouble(Long::doubleValue).toArray(),
                       floatValue.stream().mapToDouble(Float::doubleValue).toArray());
       result.success(Arrays.stream(t_out).mapToDouble(psf::value).toArray());
 
