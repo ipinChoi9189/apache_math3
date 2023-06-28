@@ -44,12 +44,17 @@ public class ApacheMath3Plugin implements FlutterPlugin, MethodCallHandler {
     }else if(call.method.equals("linearErp")){
       List<Long> t_in = call.argument("input");
       List<Float> value = call.argument("value");
-      long[] t_out = call.argument("output");
+      List<Integer> originOutput  = call.argument("output");
+
+      long[] t_out = new long[originOutput.size()];
+      for (int i = 0; i < originOutput.size(); i++) {
+        t_out[i] = originOutput.get(i).longValue();
+      }
+
 
       LinearInterpolator li = new LinearInterpolator();
       assert t_in != null;
       assert value != null;
-      assert t_out != null;
       PolynomialSplineFunction psf =
               li.interpolate(t_in.stream().mapToDouble(Long::doubleValue).toArray(),
                       value.stream().mapToDouble(Float::doubleValue).toArray());
