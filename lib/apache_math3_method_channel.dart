@@ -21,10 +21,16 @@ class MethodChannelApacheMath3 extends ApacheMath3Platform {
     required List<double> value,
     required List<int> output,
   }) async {
-    final result = await methodChannel.invokeMethod('linearErp',
-        {"input": input, "value": value, "output": output}) ??
-        [0.0];
+    try{
+      final result = await methodChannel.invokeMethod('linearErp',
+          {"input": input, "value": value, "output": output}) ??
+          [0.0];
 
-    return result;
+      return result;
+    }catch(e){
+      print('method channel error $e');
+      return [1.2,2.3];
+    }
+
   }
 }
