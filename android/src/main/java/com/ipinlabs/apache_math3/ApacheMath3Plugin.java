@@ -43,7 +43,7 @@ public class ApacheMath3Plugin implements FlutterPlugin, MethodCallHandler {
     if (call.method.equals("getPlatformVersion")) {
       result.success("Android " + android.os.Build.VERSION.RELEASE);
     }else if(call.method.equals("linearErp")){
-      List<BigInteger> t_in = call.argument("input");
+      List<Integer> t_in = call.argument("input");
 //      List<Double> originValue = call.argument("value");
       List<Integer> originOutput  = call.argument("output");
 
@@ -52,7 +52,7 @@ public class ApacheMath3Plugin implements FlutterPlugin, MethodCallHandler {
       assert  originOutput != null;
 
       List<Long> longTinList = new ArrayList<>();
-      for (BigInteger inElement : t_in) {
+      for (Integer inElement : t_in) {
         longTinList.add(inElement.longValue());
       }
 
