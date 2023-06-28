@@ -62,7 +62,7 @@ public class ApacheMath3Plugin implements FlutterPlugin, MethodCallHandler {
       PolynomialSplineFunction psf =
               li.interpolate(t_in.stream().mapToDouble(Long::doubleValue).toArray(),
                       floatValue.stream().mapToDouble(Float::doubleValue).toArray());
-      result.success(Arrays.stream(t_out).mapToDouble(psf::floatValue).toArray());
+      result.success(Arrays.stream(t_out).mapToDouble(psf::value).toArray());
 
     }else {
       result.notImplemented();
