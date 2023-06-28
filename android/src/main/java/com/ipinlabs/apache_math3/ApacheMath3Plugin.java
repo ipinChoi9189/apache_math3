@@ -42,13 +42,19 @@ public class ApacheMath3Plugin implements FlutterPlugin, MethodCallHandler {
     if (call.method.equals("getPlatformVersion")) {
       result.success("Android " + android.os.Build.VERSION.RELEASE);
     }else if(call.method.equals("linearErp")){
-      List<Long> t_in = call.argument("input");
+      List<Integer> t_in = call.argument("input");
       List<Double> originValue = call.argument("value");
       List<Integer> originOutput  = call.argument("output");
 
       assert t_in != null;
       assert  originValue != null;
       assert  originOutput != null;
+
+      List<Long> longList = new ArrayList<>();
+      for (Integer value : t_in) {
+        longList.add(value.longValue());
+      }
+      List<Long> longTin = longList;
 
       List<Float> floatValue = new ArrayList<>();
       for (Double element : originValue) {
@@ -62,7 +68,7 @@ public class ApacheMath3Plugin implements FlutterPlugin, MethodCallHandler {
 
       LinearInterpolator li = new LinearInterpolator();
       PolynomialSplineFunction psf =
-              li.interpolate(t_in.stream().mapToDouble(Long::doubleValue).toArray(),
+              li.interpolate(longTin.stream().mapToDouble(Long::doubleValue).toArray(),
                       floatValue.stream().mapToDouble(Float::doubleValue).toArray());
       result.success(Arrays.stream(t_out).mapToDouble(psf::value).toArray());
 
