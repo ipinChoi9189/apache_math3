@@ -43,16 +43,23 @@ public class ApacheMath3Plugin implements FlutterPlugin, MethodCallHandler {
       result.success("Android " + android.os.Build.VERSION.RELEASE);
     }else if(call.method.equals("linearErp")){
       List<Integer> t_in = call.argument("input");
-      List<Double> originValue = call.argument("value");
+//      List<Double> originValue = call.argument("value");
       List<Integer> originOutput  = call.argument("output");
 
       assert t_in != null;
-      assert  originValue != null;
+
       assert  originOutput != null;
 
       List<Long> longTinList = new ArrayList<>();
-      for (Integer value : t_in) {
-        longTinList.add(value.longValue());
+      for (Integer inElement : t_in) {
+        longTinList.add(Integer.valueOf(inElement).longValue());
+      }
+
+      List<Double> tempValueList = new ArrayList<>();
+      List<Double> originValue = call.argument("value");
+      assert  originValue != null;
+      for (double element : originValue) {
+        tempValueList.add(element);
       }
 
       List<Float> floatValue = new ArrayList<>();
