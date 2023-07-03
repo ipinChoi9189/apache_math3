@@ -40,42 +40,53 @@ public class ApacheMath3Plugin implements FlutterPlugin, MethodCallHandler {
       System.out.println("start linerErp");
       try {
         List<Integer> t_in = call.argument("input");
+        System.out.println("1: tin");
 //      List<Double> originValue = call.argument("value");
         List<Integer> originOutput = call.argument("output");
+        System.out.println("2: originOutput");
 
         assert t_in != null;
+        System.out.println("3");
 
         assert originOutput != null;
+        System.out.println("4");
 
         List<Long> longTinList = new ArrayList<>();
         for (Integer inElement : t_in) {
           longTinList.add(inElement.longValue());
         }
+        System.out.println("5: logTin");
 
         List<Double> tempValueList = new ArrayList<>();
         List<Double> originValue = call.argument("value");
+        System.out.println("6: origin value");
         assert originValue != null;
         for (double element : originValue) {
           tempValueList.add(element);
         }
+        System.out.println("7: tempValueList");
 
         List<Float> floatValue = new ArrayList<>();
         for (Double element : originValue) {
           floatValue.add(element.floatValue());
         }
+        System.out.println("8: floatValue");
 
         long[] t_out = new long[originOutput.size()];
         for (int i = 0; i < originOutput.size(); i++) {
           t_out[i] = originOutput.get(i).longValue();
         }
+        System.out.println("9: t_out");
 
         LinearInterpolator li = new LinearInterpolator();
         PolynomialSplineFunction psf =
                 li.interpolate(longTinList.stream().mapToDouble(Long::doubleValue).toArray(),
                         floatValue.stream().mapToDouble(Float::doubleValue).toArray());
+        System.out.println("10: operation");
         result.success(Arrays.stream(t_out).mapToDouble(psf::value).toArray());
 
       } catch (Error e) {
+        System.out.println("e:" + e.getMessage());
         result.error("error", e.getMessage(),null);
       }
     }
