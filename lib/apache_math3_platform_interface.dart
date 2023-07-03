@@ -27,7 +27,7 @@ abstract class ApacheMath3Platform extends PlatformInterface {
     throw UnimplementedError('platformVersion() has not been implemented.');
   }
 
-  Future<List<double>> linearErp({
+  Future<List<double>?> linearErp({
     required List<int> input,
     required List<double> value,
     required List<int> output,
