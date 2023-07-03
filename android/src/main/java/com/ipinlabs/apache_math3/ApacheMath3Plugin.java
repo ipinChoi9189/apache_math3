@@ -85,7 +85,9 @@ public class ApacheMath3Plugin implements FlutterPlugin, MethodCallHandler {
                         floatValue.stream().mapToDouble(Float::doubleValue).toArray());
 
         System.out.println("10: operation");
-        result.success(Arrays.stream(t_out).mapToDouble(psf::value).toArray());
+
+        double[] temp = Arrays.stream(t_out).mapToDouble(psf::value).toArray();
+        result.success(temp);
 
         System.out.println("11: success");
 
