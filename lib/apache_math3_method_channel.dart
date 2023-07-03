@@ -29,7 +29,7 @@ class MethodChannelApacheMath3 extends ApacheMath3Platform {
       return result;
     }catch(e){
       print('method channel error $e');
-      return [1.2,2.3];
+      throw(e);
     }
 
   }

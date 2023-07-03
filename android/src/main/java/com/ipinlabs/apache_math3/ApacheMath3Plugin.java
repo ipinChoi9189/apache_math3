@@ -2,7 +2,6 @@ package com.ipinlabs.apache_math3;
 
 import androidx.annotation.NonNull;
 
-import java.math.BigInteger;
 import java.util.List;
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
@@ -14,13 +13,8 @@ import io.flutter.plugin.common.MethodChannel.Result;
 import org.apache.commons.math3.analysis.interpolation.LinearInterpolator;
 import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
 
-import java.io.IOException;
-import java.nio.MappedByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
 
 /** ApacheMath3Plugin */
 public class ApacheMath3Plugin implements FlutterPlugin, MethodCallHandler {
@@ -42,46 +36,50 @@ public class ApacheMath3Plugin implements FlutterPlugin, MethodCallHandler {
   public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
     if (call.method.equals("getPlatformVersion")) {
       result.success("Android " + android.os.Build.VERSION.RELEASE);
-    }else if(call.method.equals("linearErp")){
-      List<Integer> t_in = call.argument("input");
+    }else if(call.method.equals("linearErp")) {
+      System.out.println("start linerErp");
+      try {
+        List<Integer> t_in = call.argument("input");
 //      List<Double> originValue = call.argument("value");
-      List<Integer> originOutput  = call.argument("output");
+        List<Integer> originOutput = call.argument("output");
 
-      assert t_in != null;
+        assert t_in != null;
 
-      assert  originOutput != null;
+        assert originOutput != null;
 
-      List<Long> longTinList = new ArrayList<>();
-      for (Integer inElement : t_in) {
-        longTinList.add(inElement.longValue());
+        List<Long> longTinList = new ArrayList<>();
+        for (Integer inElement : t_in) {
+          longTinList.add(inElement.longValue());
+        }
+
+        List<Double> tempValueList = new ArrayList<>();
+        List<Double> originValue = call.argument("value");
+        assert originValue != null;
+        for (double element : originValue) {
+          tempValueList.add(element);
+        }
+
+        List<Float> floatValue = new ArrayList<>();
+        for (Double element : originValue) {
+          floatValue.add(element.floatValue());
+        }
+
+        long[] t_out = new long[originOutput.size()];
+        for (int i = 0; i < originOutput.size(); i++) {
+          t_out[i] = originOutput.get(i).longValue();
+        }
+
+        LinearInterpolator li = new LinearInterpolator();
+        PolynomialSplineFunction psf =
+                li.interpolate(longTinList.stream().mapToDouble(Long::doubleValue).toArray(),
+                        floatValue.stream().mapToDouble(Float::doubleValue).toArray());
+        result.success(Arrays.stream(t_out).mapToDouble(psf::value).toArray());
+
+      } catch (Error e) {
+        result.error("error", e.getMessage(),null);
       }
-
-      List<Double> tempValueList = new ArrayList<>();
-      List<Double> originValue = call.argument("value");
-      assert  originValue != null;
-      for (double element : originValue) {
-        tempValueList.add(element);
-      }
-
-      List<Float> floatValue = new ArrayList<>();
-      for (Double element : originValue) {
-        floatValue.add(element.floatValue());
-      }
-
-      long[] t_out = new long[originOutput.size()];
-      for (int i = 0; i < originOutput.size(); i++) {
-        t_out[i] = originOutput.get(i).longValue();
-      }
-
-      LinearInterpolator li = new LinearInterpolator();
-      PolynomialSplineFunction psf =
-              li.interpolate(longTinList.stream().mapToDouble(Long::doubleValue).toArray(),
-                      floatValue.stream().mapToDouble(Float::doubleValue).toArray());
-      result.success(Arrays.stream(t_out).mapToDouble(psf::value).toArray());
-
-    }else {
-      result.notImplemented();
     }
+
   }
 
   @Override
