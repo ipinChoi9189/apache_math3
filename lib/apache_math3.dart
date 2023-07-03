@@ -9,8 +9,13 @@ class ApacheMath3 {
     required List<int> input,
     required List<double> value,
     required List<int> output,
-  }) async =>
-    ApacheMath3Platform.instance
+  }) async {
+    print(
+        'cvvcccccccc input: ${input.length} value: ${value.length} output:${output.length}');
+    List<double> temp = await ApacheMath3Platform.instance
         .linearErp(input: input, value: value, output: output);
-
+    print('tttttttttt');
+    print(temp);
+    return Future.value(temp);
+  }
 }
