@@ -24,7 +24,9 @@ class MethodChannelApacheMath3 extends ApacheMath3Platform {
     try{
       print('dart channel start');
       final result = await methodChannel.invokeMethod<List<dynamic>?>('linearErp',
-          {"input": input, "value": value, "output": output}) ??
+          {"input": input, "value": value, "output": output}).whenComplete((){
+            print('sisisisifalfalfla');
+      }) ??
           [0.0];
 
       print('11223333 ${result.length}');
