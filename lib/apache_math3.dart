@@ -2,7 +2,8 @@ import 'apache_math3_platform_interface.dart';
 
 class ApacheMath3 {
   Future<String?> getPlatformVersion() {
-    return ApacheMath3Platform.instance.getPlatformVersion();
+    return Future.value("success work");
+      // pacheMath3Platform.instance.getPlatformVersion();
   }
 
   Future<List<double>?> linearErp({
