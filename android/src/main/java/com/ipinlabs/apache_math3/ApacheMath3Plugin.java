@@ -4,8 +4,6 @@ import androidx.annotation.NonNull;
 
 import java.util.List;
 
-import io.flutter.embedding.android.FlutterActivity;
-import io.flutter.embedding.engine.FlutterEngine;
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
@@ -20,8 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /** ApacheMath3Plugin */
-public class ApacheMath3Plugin extends FlutterActivity{
-
+public class ApacheMath3Plugin implements FlutterPlugin, MethodCallHandler {
   /// The MethodChannel that will the communication between Flutter and native Android
   ///
   /// This local reference serves to register the plugin with the Flutter Engine and unregister it
@@ -30,51 +27,60 @@ public class ApacheMath3Plugin extends FlutterActivity{
 
   private static final String TAG = "ApacheMath3Channel";
 
-  public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
-    super.configureFlutterEngine(flutterEngine);
-    new MethodChannel(flutterEngine.getDartExecutor().getBinaryMessenger(), "apache_math3")
-            .setMethodCallHandler(
-                    (call, result) -> {
-                      if (call.method.equals("getPlatformVersion")) {
-                        result.success("Android " + android.os.Build.VERSION.RELEASE);
-                      }else if(call.method.equals("linearErp")) {
-                        try {
-                          List<Integer> t_in = call.argument("input");
-                          List<Integer> originOutput = call.argument("output");
+  @Override
+  public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
+    channel = new MethodChannel(flutterPluginBinding.getFlutterEngine().getDartExecutor().getBinaryMessenger(), "apache_math3", StandardMethodCodec.INSTANCE);
+    channel.setMethodCallHandler(this);
+  }
 
-                          List<Long> longTinList = new ArrayList<>();
-                          for (Integer inElement : t_in) {
-                            longTinList.add(inElement.longValue());
-                          }
-                          List<Double> originValue = call.argument("value");
-                          List<Float> floatValue = new ArrayList<>();
-                          for (Double element : originValue) {
-                            floatValue.add(element.floatValue());
-                          }
+  @Override
+  public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
+    if (call.method.equals("getPlatformVersion")) {
+      result.success("Android " + android.os.Build.VERSION.RELEASE);
+    }else if(call.method.equals("linearErp")) {
+      try {
+        List<Integer> t_in = call.argument("input");
+//      List<Double> originValue = call.argument("value");
+        List<Integer> originOutput = call.argument("output");
 
-                          long[] t_out = new long[originOutput.size()];
-                          for (int i = 0; i < originOutput.size(); i++) {
-                            t_out[i] = originOutput.get(i).longValue();
-                          }
+        List<Long> longTinList = new ArrayList<>();
+        for (Integer inElement : t_in) {
+          longTinList.add(inElement.longValue());
+        }
+        List<Double> originValue = call.argument("value");
+        List<Double> tempValueList = new ArrayList<>(originValue);
+        List<Float> floatValue = new ArrayList<>();
+        for (Double element : originValue) {
+          floatValue.add(element.floatValue());
+        }
 
-                          LinearInterpolator li = new LinearInterpolator();
-                          PolynomialSplineFunction psf =
-                                  li.interpolate(longTinList.stream().mapToDouble(Long::doubleValue).toArray(),
-                                          floatValue.stream().mapToDouble(Float::doubleValue).toArray());
+        long[] t_out = new long[originOutput.size()];
+        for (int i = 0; i < originOutput.size(); i++) {
+          t_out[i] = originOutput.get(i).longValue();
+        }
 
-                          double[] temp = Arrays.stream(t_out).mapToDouble(psf::value).toArray();
-                          result.success(temp);
+        LinearInterpolator li = new LinearInterpolator();
+        PolynomialSplineFunction psf =
+                li.interpolate(longTinList.stream().mapToDouble(Long::doubleValue).toArray(),
+                        floatValue.stream().mapToDouble(Float::doubleValue).toArray());
 
-                          System.out.println("11: success" + temp.length);
+        double[] temp = Arrays.stream(t_out).mapToDouble(psf::value).toArray();
+        result.success(temp);
 
-                        } catch (Error e) {
-                          System.out.println("e:" + e.getMessage());
-                          result.error("error", e.getMessage(),null);
-                        }
-                      }else {
-                        result.notImplemented();
-                      }
-                    }
-            );
+        System.out.println("11: success" + temp.length);
+
+      } catch (Error e) {
+        System.out.println("e:" + e.getMessage());
+        result.error("error", e.getMessage(),null);
+      }
+    }else {
+      result.notImplemented();
+    }
+
+  }
+
+  @Override
+  public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
+    channel.setMethodCallHandler(null);
   }
 }
