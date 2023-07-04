@@ -27,10 +27,12 @@ class MethodChannelApacheMath3 extends ApacheMath3Platform {
           {"input": input, "value": value, "output": output}) ??
           [0.0];
 
+      List<double> doubleList = result.map<double>((dynamic value) => value as double).toList();
+
       print('dart channel finish');
       print(result.toString());
 
-      return result;
+      return doubleList;
     }catch(e){
       print('method channel error $e');
       throw(e);
