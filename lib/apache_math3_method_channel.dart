@@ -11,10 +11,8 @@ class MethodChannelApacheMath3 extends ApacheMath3Platform {
 
   @override
   Future<String?> getPlatformVersion() async {
-    print('qqqqqqqqqqqq');
     final version =
         await methodChannel.invokeMethod<String>('getPlatformVersion');
-    print('wwwwwwwwwww');
     return version;
   }
 
@@ -24,28 +22,8 @@ class MethodChannelApacheMath3 extends ApacheMath3Platform {
     required List<double> value,
     required List<int> output,
   }) async {
-    try {
-      print('dart channel start');
-      final result = await methodChannel.invokeListMethod('linearErp',
-              {"input": input, "value": value, "output": output}) ??
-          [];
-
-      print('11223333 ${result.length}');
-      List<double> doubleList =
-          result.map<double>((dynamic value) => value as double).toList();
-      print('vvvfffff ${doubleList.length}');
-
-      print('dart channel finish');
-      print(result.toString());
-
-      return doubleList;
-    } on PlatformException catch (r) {
-      // 에러 처리
-      print('rrrddd ${r.message}');
-      return <double>[];
-    } catch (e) {
-      print('method channel error $e');
-      throw (e);
-    }
+    final result = await methodChannel.invokeMethod(
+        'linearErp', {"input": input, "value": value, "output": output});
+    return result;
   }
 }
