@@ -75,6 +75,7 @@ public class ApacheMath3Plugin implements FlutterPlugin, MethodCallHandler {
         System.out.println("8: floatValue" + floatValue.size());
         long[] t_out = new long[originOutput.size()];
         for (int i = 0; i < originOutput.size(); i++) {
+          System.out.println("a" +  originOutput.get(i).longValue());
           t_out[i] = originOutput.get(i).longValue();
         }
 
