@@ -35,6 +35,9 @@ class MethodChannelApacheMath3 extends ApacheMath3Platform {
       print(result.toString());
 
       return doubleList;
+    } on PlatformException catch (e) {
+      print('?????????');
+      return <double>[];
     }catch(e){
       print('method channel error $e');
       throw(e);
