@@ -24,8 +24,8 @@ class MethodChannelApacheMath3 extends ApacheMath3Platform {
     try{
       print('dart channel start');
       final result = await methodChannel.invokeMethod<List<dynamic>?>('linearErp',
-          {"input": input, "value": value, "output": output}).whenComplete((){
-            print('sisisisifalfalfla');
+          {"input": input, "value": value, "output": output}).catchError((e){
+            print('zzzzzzzzzz $e');
       }) ??
           [0.0];
 
@@ -38,7 +38,7 @@ class MethodChannelApacheMath3 extends ApacheMath3Platform {
 
       return doubleList;
     } on PlatformException catch (e) {
-      print('?????????');
+      // 에러 처리
       return <double>[];
     }catch(e){
       print('method channel error $e');
