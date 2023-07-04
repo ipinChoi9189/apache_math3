@@ -26,7 +26,7 @@ class MethodChannelApacheMath3 extends ApacheMath3Platform {
   }) async {
     try {
       print('dart channel start');
-      final result = await methodChannel.invokeMethod('linearErp',
+      final result = await methodChannel.invokeListMethod('linearErp',
               {"input": input, "value": value, "output": output}) ??
           [];
 
