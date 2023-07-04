@@ -39,7 +39,7 @@ class MethodChannelApacheMath3 extends ApacheMath3Platform {
       return doubleList;
     } on PlatformException catch (r) {
       // 에러 처리
-      print('rrrddd $r');
+      print('rrrddd ${r.message}');
       return <double>[];
     } catch (e) {
       print('method channel error $e');
