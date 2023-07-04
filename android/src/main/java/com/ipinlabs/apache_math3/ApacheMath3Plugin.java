@@ -33,7 +33,7 @@ public class ApacheMath3Plugin implements FlutterPlugin, MethodCallHandler {
   }
 
   @Override
-  public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
+  public void onMethodCall(@NonNull MethodCall call, MethodChannel.Result result) {
     if (call.method.equals("getPlatformVersion")) {
       result.success("Android " + android.os.Build.VERSION.RELEASE);
     }else if(call.method.equals("linearErp")) {
@@ -95,6 +95,8 @@ public class ApacheMath3Plugin implements FlutterPlugin, MethodCallHandler {
         System.out.println("e:" + e.getMessage());
         result.error("error", e.getMessage(),null);
       }
+    }else {
+      result.notImplemented();
     }
 
   }
