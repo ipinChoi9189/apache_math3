@@ -8,7 +8,7 @@ class ApacheMath3 {
     return version;
   }
 
-  Future<List<double>?> linearErp({
+  static Future<List<double>?> linearErp({
     required List<int> input,
     required List<double> value,
     required List<int> output,
