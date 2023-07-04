@@ -4,12 +4,9 @@ import androidx.annotation.NonNull;
 
 import java.util.List;
 
-import io.flutter.embedding.engine.plugins.FlutterPlugin;
-import io.flutter.plugin.common.MethodCall;
+import io.flutter.embedding.android.FlutterActivity;
+import io.flutter.embedding.engine.FlutterEngine;
 import io.flutter.plugin.common.MethodChannel;
-import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
-import io.flutter.plugin.common.MethodChannel.Result;
-import io.flutter.plugin.common.StandardMethodCodec;
 
 import org.apache.commons.math3.analysis.interpolation.LinearInterpolator;
 import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
@@ -18,36 +15,35 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /** ApacheMath3Plugin */
-public class ApacheMath3Plugin implements FlutterPlugin, MethodCallHandler {
-  /// The MethodChannel that will the communication between Flutter and native Android
-  ///
-  /// This local reference serves to register the plugin with the Flutter Engine and unregister it
-  /// when the Flutter Engine is detached from the Activity
-  private MethodChannel channel;
+public class ApacheMath3Plugin extends FlutterActivity {
 
   private static final String TAG = "ApacheMath3Channel";
 
   @Override
-  public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
-    channel = new MethodChannel(flutterPluginBinding.getFlutterEngine().getDartExecutor().getBinaryMessenger(), "apache_math3", StandardMethodCodec.INSTANCE);
-    channel.setMethodCallHandler(this);
+  public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
+    super.configureFlutterEngine(flutterEngine);
+    /// The MethodChannel that will the communication between Flutter and native Android
+    ///
+    /// This local reference serves to register the plugin with the Flutter Engine and unregister it
+    /// when the Flutter Engine is detached from the Activity
+    final MethodChannel channel = new MethodChannel(flutterEngine.getDartExecutor(), "apache_math3");
+    channel.setMethodCallHandler(handler);
   }
 
-  @Override
-  public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
-    if (call.method.equals("getPlatformVersion")) {
+  private MethodChannel.MethodCallHandler handler = (methodCall, result) -> {
+    if (methodCall.method.equals("getPlatformVersion")) {
       result.success("Android " + android.os.Build.VERSION.RELEASE);
-    }else if(call.method.equals("linearErp")) {
+    }else if(methodCall.method.equals("linearErp")) {
       try {
-        List<Integer> t_in = call.argument("input");
+        List<Integer> t_in = methodCall.argument("input");
 //      List<Double> originValue = call.argument("value");
-        List<Integer> originOutput = call.argument("output");
+        List<Integer> originOutput = methodCall.argument("output");
 
         List<Long> longTinList = new ArrayList<>();
         for (Integer inElement : t_in) {
           longTinList.add(inElement.longValue());
         }
-        List<Double> originValue = call.argument("value");
+        List<Double> originValue = methodCall.argument("value");
         List<Double> tempValueList = new ArrayList<>(originValue);
         List<Float> floatValue = new ArrayList<>();
         for (Double element : originValue) {
@@ -76,11 +72,6 @@ public class ApacheMath3Plugin implements FlutterPlugin, MethodCallHandler {
     }else {
       result.notImplemented();
     }
+  };
 
-  }
-
-  @Override
-  public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
-    channel.setMethodCallHandler(null);
-  }
 }
