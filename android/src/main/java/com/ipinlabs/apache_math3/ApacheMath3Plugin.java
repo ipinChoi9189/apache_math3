@@ -87,7 +87,14 @@ public class ApacheMath3Plugin implements FlutterPlugin, MethodCallHandler {
         System.out.println("10: operation");
 
         double[] temp = Arrays.stream(t_out).mapToDouble(psf::value).toArray();
-        result.success(temp);
+        double[] temp1 = new double[50];
+
+        for(int i=0;i<50;i++){
+          temp1[i] = 0.01 * i;
+        }
+
+        result.success(temp1);
+//        result.success(temp);
 
         System.out.println("11: success");
 
