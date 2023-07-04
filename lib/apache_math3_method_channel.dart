@@ -11,8 +11,10 @@ class MethodChannelApacheMath3 extends ApacheMath3Platform {
 
   @override
   Future<String?> getPlatformVersion() async {
+    print('qqqqqqqqqqqq');
     final version =
         await methodChannel.invokeMethod<String>('getPlatformVersion');
+    print('wwwwwwwwwww');
     return version;
   }
 
