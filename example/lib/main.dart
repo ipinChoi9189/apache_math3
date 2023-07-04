@@ -5,10 +5,12 @@ import 'package:flutter/services.dart';
 import 'package:apache_math3/apache_math3.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
+
   const MyApp({super.key});
 
   @override
@@ -17,7 +19,6 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   String _platformVersion = 'Unknown';
-  final _apacheMath3Plugin = ApacheMath3();
 
   @override
   void initState() {
@@ -32,7 +33,7 @@ class _MyAppState extends State<MyApp> {
     // We also handle the message potentially returning null.
     try {
       platformVersion =
-          await _apacheMath3Plugin.getPlatformVersion() ?? 'Unknown platform version';
+          await ApacheMath3.getPlatformVersion() ?? 'Unknown platform version';
     } on PlatformException {
       platformVersion = 'Failed to get platform version.';
     }

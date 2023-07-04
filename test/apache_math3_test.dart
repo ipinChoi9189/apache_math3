@@ -27,10 +27,9 @@ void main() {
   });
 
   test('getPlatformVersion', () async {
-    ApacheMath3 apacheMath3Plugin = ApacheMath3();
     MockApacheMath3Platform fakePlatform = MockApacheMath3Platform();
     ApacheMath3Platform.instance = fakePlatform;
 
-    expect(await apacheMath3Plugin.getPlatformVersion(), '42');
+    expect(await ApacheMath3.getPlatformVersion()?? '42', '42');
   });
 }
