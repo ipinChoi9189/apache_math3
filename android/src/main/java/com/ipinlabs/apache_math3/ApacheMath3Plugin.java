@@ -40,10 +40,10 @@ public class ApacheMath3Plugin implements FlutterPlugin, MethodCallHandler {
       System.out.println("start linerErp");
       try {
         List<Integer> t_in = call.argument("input");
-        System.out.println("1: tin");
+        System.out.println("1: tin" + t_in.size());
 //      List<Double> originValue = call.argument("value");
         List<Integer> originOutput = call.argument("output");
-        System.out.println("2: originOutput");
+        System.out.println("2: originOutput" + originOutput.size());
 
         assert t_in != null;
         System.out.println("3");
@@ -55,30 +55,30 @@ public class ApacheMath3Plugin implements FlutterPlugin, MethodCallHandler {
         for (Integer inElement : t_in) {
           longTinList.add(inElement.longValue());
         }
-        System.out.println("5: logTin");
+        System.out.println("5: logTin" + longTinList.size());
 
         List<Double> tempValueList = new ArrayList<>();
         List<Double> originValue = call.argument("value");
-        System.out.println("6: origin value");
+        System.out.println("6: origin value" + originValue.size());
 
         assert originValue != null;
         for (double element : originValue) {
           tempValueList.add(element);
         }
 
-        System.out.println("7: tempValueList");
+        System.out.println("7: tempValueList" + tempValueList.size());
         List<Float> floatValue = new ArrayList<>();
         for (Double element : originValue) {
           floatValue.add(element.floatValue());
         }
 
-        System.out.println("8: floatValue");
+        System.out.println("8: floatValue" + floatValue.size());
         long[] t_out = new long[originOutput.size()];
         for (int i = 0; i < originOutput.size(); i++) {
           t_out[i] = originOutput.get(i).longValue();
         }
 
-        System.out.println("9: t_out");
+        System.out.println("9: t_out" + t_out.length);
         LinearInterpolator li = new LinearInterpolator();
         PolynomialSplineFunction psf =
                 li.interpolate(longTinList.stream().mapToDouble(Long::doubleValue).toArray(),
@@ -87,16 +87,9 @@ public class ApacheMath3Plugin implements FlutterPlugin, MethodCallHandler {
         System.out.println("10: operation");
 
         double[] temp = Arrays.stream(t_out).mapToDouble(psf::value).toArray();
-        double[] temp1 = new double[50];
+        result.success(temp);
 
-        for(int i=0;i<50;i++){
-          temp1[i] = 0.01 * i;
-        }
-
-        result.success(temp1);
-//        result.success(temp);
-
-        System.out.println("11: success");
+        System.out.println("11: success" + temp.length);
 
       } catch (Error e) {
         System.out.println("e:" + e.getMessage());
