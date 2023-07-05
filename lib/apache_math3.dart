@@ -17,18 +17,4 @@ class ApacheMath3 {
         'linearErp', {"input": input, "value": value, "output": output});
     return result;
   }
-
-  // Future<String?> getPlatformVersion() {
-  //   return ApacheMath3Platform.instance.getPlatformVersion();
-  // }
-  //
-  // Future<List<double>?> linearErp({
-  //   required List<int> input,
-  //   required List<double> value,
-  //   required List<int> output,
-  // }) async {
-  //   return await ApacheMath3Platform.instance
-  //           .linearErp(input: input, value: value, output: output) ??
-  //       [];
-  // }
 }
