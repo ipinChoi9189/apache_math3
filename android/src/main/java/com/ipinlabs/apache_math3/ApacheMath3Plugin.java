@@ -25,7 +25,7 @@ public class ApacheMath3Plugin implements FlutterPlugin, MethodCallHandler {
   /// when the Flutter Engine is detached from the Activity
   private MethodChannel channel;
 
-  private static final String apacheMath3Channel = "ApacheMath3Channel";
+  private static final String apacheMath3Channel = "apache_math3";
 
   @Override
   public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
